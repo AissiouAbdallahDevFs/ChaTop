@@ -10,6 +10,7 @@ import com.rentals.api.Repository.*;
 import com.rentals.api.model.Rentals;
 
 
+
 @Service
 public class RentalsService {
 
@@ -23,4 +24,12 @@ public class RentalsService {
     public Optional<Rentals> getRentalById(Long id) {
         return rentalsRepository.findById(id);
     }
+    
+    public Rentals saveRentals(Rentals rentals) {
+    	Rentals savedRentals = rentalsRepository.save(rentals);
+    	return savedRentals;
+    }
+    
+    
+
 }

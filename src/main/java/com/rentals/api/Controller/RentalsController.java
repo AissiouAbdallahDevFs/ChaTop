@@ -6,11 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 import com.rentals.api.Service.RentalsService;
 import com.rentals.api.model.Rentals;
+
 
 @RestController
 @CrossOrigin
@@ -36,4 +39,8 @@ public class RentalsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/rentals")
+	public Rentals createRentals(@RequestBody Rentals rentals) {
+		return rentalsService.saveRentals(rentals);
+	}
 }

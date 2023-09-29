@@ -22,7 +22,11 @@ public class UserService {
 	 public Optional<User> GetUserById(Long id) {
 		    return userRepository.findById(id);
 	}
-
+    
+	public User saveUser(User user) {
+		User savedUser= userRepository.save(user);
+	        return savedUser;
+	    }
 }
 
 
