@@ -16,7 +16,7 @@ import com.rentals.api.model.User;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/")
+@RequestMapping("/api")
 public class UserController {
 
 	@Autowired
