@@ -108,6 +108,8 @@ public class Rentals {
 		this.updatedAt = updatedAt;
 	}
 
+
+
 	
 	
 }

@@ -4,8 +4,11 @@ package com.rentals.api.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+
 import java.sql.Timestamp;
 
+@Data
 @Entity
 @Table(name = "Messages")
 public class Messages {
