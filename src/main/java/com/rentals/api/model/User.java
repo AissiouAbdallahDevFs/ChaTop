@@ -77,4 +77,10 @@ public class User {
 		this.updatedAt = updatedAt;
 	}
 
+    public String getRole() {
+        return null;
+    }
+
+
+
 }
