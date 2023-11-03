@@ -1,6 +1,6 @@
 package com.rentals.api.Service;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -9,6 +9,10 @@ import java.io.Serializable;
 
 import com.rentals.api.Repository.*;
 import com.rentals.api.model.Rentals;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 
 
@@ -37,10 +41,41 @@ public class RentalsService {
         return rentalsRepository.findById(id);
     }
     
-    public Rentals saveRentals(Rentals rentals) {
+   public Rentals saveRentals(Rentals rentals, MultipartFile picture) {
+        String pictureFileName = picture.getOriginalFilename();
+        rentals.setPicture(pictureFileName);
+        System.out.println("rentals : " + rentals);
         Rentals savedRentals = rentalsRepository.save(rentals);
+        uploadFileToFolder(picture);
         return savedRentals;
     }
+
+    private void uploadFileToFolder(MultipartFile file) {
+        try {
+            String folderPath = "file/";
+            String originalFileName = file.getOriginalFilename();
+            Path targetPath = Path.of(folderPath, originalFileName);
+            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* msie en place du micro service aws soon
+     * 
+        public Rentals saveRentals(MultipartFile picture, Rentals rentals) {
+        String pictureFileName = picture.getOriginalFilename();
+        rentals.setPicture(pictureFileName);
+        Rentals savedRentals = rentalsRepository.save(rentals);
+        uploadFileToAWS(picture, pictureFileName);
+
+        return savedRentals;
+    }
+
+    private void uploadFileToAWS(MultipartFile file, String fileName) {
+        // mettre en place le micro service aws soon
+    }
+     */
     
     public Rentals updateRentals(Rentals updatedRentals) {
        

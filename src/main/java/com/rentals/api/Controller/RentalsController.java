@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Optional;
 import com.rentals.api.Service.RentalsService;
@@ -45,9 +47,18 @@ public class RentalsController {
         }
     }
 
-    @PostMapping(value = "/rentals", consumes = "application/json")
+    @PostMapping(value = "/rentals", consumes = {"multipart/form-data"})
     @ApiOperation(value = "Create a new rental", notes = "Creates a new rental.")
-    public Rentals createRentals(@RequestBody Rentals rentals) {
-        return rentalsService.saveRentals(rentals);
+    public Rentals saveRentals(@RequestParam("picture") MultipartFile picture, @RequestParam("surface") BigDecimal surface, @RequestParam("price") BigDecimal price,@RequestParam("description") String description) {
+        Rentals rentals = new Rentals();
+        rentals.setSurface(surface);
+        rentals.setPrice(price);
+        rentals.setDescription(description);
+        rentals.setPicture(picture.getOriginalFilename());
+        rentals.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+        Rentals savedRentals = rentalsService.saveRentals(rentals, picture);
+        return savedRentals;
+      
     }
 }
+
