@@ -61,21 +61,6 @@ public class RentalsService {
         }
     }
 
-    /* msie en place du micro service aws soon
-     * 
-        public Rentals saveRentals(MultipartFile picture, Rentals rentals) {
-        String pictureFileName = picture.getOriginalFilename();
-        rentals.setPicture(pictureFileName);
-        Rentals savedRentals = rentalsRepository.save(rentals);
-        uploadFileToAWS(picture, pictureFileName);
-
-        return savedRentals;
-    }
-
-    private void uploadFileToAWS(MultipartFile file, String fileName) {
-        // mettre en place le micro service aws soon
-    }
-     */
     
     public Rentals updateRentals(Rentals updatedRentals) {
        
