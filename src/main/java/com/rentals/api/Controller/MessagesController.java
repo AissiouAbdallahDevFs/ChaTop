@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.rentals.api.Service.MessagesService;
 import com.rentals.api.model.Messages;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @CrossOrigin
@@ -20,11 +23,17 @@ public class MessagesController {
     @Autowired
     private MessagesService messagesService;
 
-    @GetMapping("Messages")
+    @GetMapping("messages")
     @ApiOperation(value = "Get all messages", notes = "Returns a list of all messages.")
     public ResponseEntity<Iterable<Messages>> getMessages() {
         Iterable<Messages> messages = messagesService.getMessages();
         return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+
+    @PostMapping("messages")
+    @ApiOperation(value = "Create a new message", notes = "Creates a new message.")
+    public Messages createMessage(@RequestBody Messages message) {
+        return messagesService.saveMessages(message);
     }
 }
 

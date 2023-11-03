@@ -4,6 +4,8 @@ package com.rentals.api.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.lang.Nullable;
+
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -19,7 +21,7 @@ public class Messages {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rentals_id")
-    @NotNull 
+    @Nullable 
     private Rentals rental;
     
     

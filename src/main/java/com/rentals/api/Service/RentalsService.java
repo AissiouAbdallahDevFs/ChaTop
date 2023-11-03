@@ -13,6 +13,7 @@ import com.rentals.api.model.Rentals;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.Paths;
 
 
 
@@ -54,13 +55,18 @@ public class RentalsService {
         try {
             String folderPath = "file/";
             String originalFileName = file.getOriginalFilename();
-            Path targetPath = Path.of(folderPath, originalFileName);
+            
+            Path folder = Paths.get(folderPath);
+            if (!Files.exists(folder)) {
+                Files.createDirectories(folder);
+            }
+    
+            Path targetPath = folder.resolve(originalFileName);
             Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     
     public Rentals updateRentals(Rentals updatedRentals) {
        
