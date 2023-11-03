@@ -76,8 +76,8 @@ public class UserService {
         }
     }
 
-    public String authenticate(String name, String password) {
-        Optional<User> optionalUser = userRepository.findByName(name);
+    public String authenticate(String email, String password) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -86,13 +86,29 @@ public class UserService {
                 byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
 
                 String token = Jwts.builder()
-                        .setSubject(name)
+                        .setSubject(email)
                         .signWith(SignatureAlgorithm.HS256, jwtSecretBytes)
                         .compact();
-                return token;
+                return "{\"token\": \"" + token + "\"}";
             }
         }
 
         return null;
+    }
+
+    public String getEmailFromToken(String token) {
+        byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
+
+        String email = Jwts.parser()
+                .setSigningKey(jwtSecretBytes)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        return email;
+    }
+
+    public Optional<User> GetUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

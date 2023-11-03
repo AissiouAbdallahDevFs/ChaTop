@@ -3,14 +3,14 @@ package com.rentals.api.Dto;
 public class UserLoginRequest {
 
 
-	private String name;
+	private String email;
     private String password;
     
-	public String getName() {
-		return name;
+	public String getEmail() {
+		return email;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;
@@ -18,5 +18,7 @@ public class UserLoginRequest {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    // Constructors, getters, and setters
+    
+    
+
 }

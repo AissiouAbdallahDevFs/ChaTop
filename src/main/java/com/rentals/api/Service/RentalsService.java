@@ -29,7 +29,8 @@ public class RentalsService {
 
 
     public Iterable<Rentals> getRentals() {
-        return rentalsRepository.findAll();
+        Iterable<Rentals> rentals = rentalsRepository.findAll();
+        return rentals;
     }
 
     public Optional<Rentals> getRentalById(Long id) {
@@ -37,8 +38,8 @@ public class RentalsService {
     }
     
     public Rentals saveRentals(Rentals rentals) {
-    	Rentals savedRentals = rentalsRepository.save(rentals);
-    	return savedRentals;
+        Rentals savedRentals = rentalsRepository.save(rentals);
+        return savedRentals;
     }
     
     public Rentals updateRentals(Rentals updatedRentals) {

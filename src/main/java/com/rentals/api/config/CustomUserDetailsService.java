@@ -23,8 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-    	Optional<User> userOptional = userRepository.findByName(name);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    	Optional<User> userOptional = userRepository.findByEmail(email);
 
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = getGrantedAuthorities("USER");
 
         return new org.springframework.security.core.userdetails.User(
-            user.getName(), user.getPassword(), authorities);
+            user.getEmail(), user.getPassword(), authorities);
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(String role) {

@@ -49,11 +49,25 @@ public class UserController {
     @PostMapping("/auth/login")
     @ApiOperation(value = "Authenticate user", notes = "Authenticate a user and return a JWT token.")
     public ResponseEntity<String> authenticateUser(@RequestBody UserLoginRequest loginRequest) {
-        String token = userService.authenticate(loginRequest.getName(), loginRequest.getPassword());
+        String token = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (token != null) {
             return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @GetMapping("/auth/me")
+    @ApiOperation(value = "Get current user", notes = "Returns the current user.")
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.substring(7);
+        String email = userService.getEmailFromToken(token);
+        Optional<User> user = userService.GetUserByEmail(email);
+
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
