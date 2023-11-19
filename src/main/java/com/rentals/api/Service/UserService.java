@@ -1,6 +1,8 @@
 package com.rentals.api.Service;
 
 import java.io.Serializable;
+
+import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,25 +78,28 @@ public class UserService {
         }
     }
 
-    public String authenticate(String email, String password) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+   
+public String authenticate(String email, String password) {
+    Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+    if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
 
-            if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
-                byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
+        if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
+            long expirationTimeInMillis = System.currentTimeMillis() + 3600000; 
 
-                String token = Jwts.builder()
-                        .setSubject(email)
-                        .signWith(SignatureAlgorithm.HS256, jwtSecretBytes)
-                        .compact();
-                return "{\"token\": \"" + token + "\"}";
-            }
+            String token = Jwts.builder()
+                    .setSubject(email)
+                    .setExpiration(new Date(expirationTimeInMillis))
+                    .signWith(SignatureAlgorithm.HS256, jwtSecretBytes)
+                    .compact();
+            return "{\"token\": \"" + token + "\"}";
         }
-
-        return null;
     }
+
+    return null;
+}
 
     public String getEmailFromToken(String token) {
         byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
