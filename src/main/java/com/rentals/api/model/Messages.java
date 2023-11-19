@@ -2,7 +2,7 @@ package com.rentals.api.model;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+
 
 import org.springframework.lang.Nullable;
 
@@ -23,8 +23,6 @@ public class Messages {
     @JoinColumn(name = "rentals_id")
     @Nullable 
     private Rentals rental;
-    
-    
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "users_id")

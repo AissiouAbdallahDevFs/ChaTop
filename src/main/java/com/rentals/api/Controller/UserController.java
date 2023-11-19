@@ -41,9 +41,22 @@ public class UserController {
 
     @PostMapping("auth/register")
     @ApiOperation(value = "Create a new user", notes = "Creates a new user.")
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<String> createUser(@RequestBody User user) {
+        String token = userService.authenticate(user.getEmail(), user.getPassword());
+        
+        if (token != null) {
+            return ResponseEntity.ok(token);
+        }
+    
+        User savedUser = userService.saveUser(user);
+        
+        if (savedUser != null) {
+            return ResponseEntity.ok(token);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+    
     
    
     @PostMapping("/auth/login")

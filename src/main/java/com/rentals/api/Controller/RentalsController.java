@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Optional;
 import com.rentals.api.Service.RentalsService;
 import com.rentals.api.model.Rentals;
+import com.rentals.api.model.User;
+
 import java.util.Map;
 
 @RestController
@@ -49,8 +51,12 @@ public class RentalsController {
 
     @PostMapping(value = "/rentals", consumes = {"multipart/form-data"})
     @ApiOperation(value = "Create a new rental", notes = "Creates a new rental.")
-    public Rentals saveRentals(@RequestParam("picture") MultipartFile picture, @RequestParam("surface") BigDecimal surface, @RequestParam("price") BigDecimal price,@RequestParam("description") String description) {
+    public Rentals saveRentals(@RequestParam("picture") MultipartFile picture, @RequestParam("surface") BigDecimal surface, @RequestParam("price") BigDecimal price,@RequestParam("description") String description,@RequestParam("name") String name , @RequestParam("user_id") Long owner){
         Rentals rentals = new Rentals();
+        User user = new User();
+        user.setId(owner);
+        rentals.setName(name);
+        rentals.setOwner(user);
         rentals.setSurface(surface);
         rentals.setPrice(price);
         rentals.setDescription(description);

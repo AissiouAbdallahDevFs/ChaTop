@@ -28,8 +28,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.giffing.bucket4j.spring.boot.starter</groupId>
 			<artifactId>bucket4j-spring-boot-starter</artifactId>
@@ -128,6 +126,7 @@
         <artifactId>springfox-swagger-ui</artifactId>
         <version>3.0.0</version> <!-- Assurez-vous de spécifier la même version que springfox-boot-starter -->
     </dependency>
+
 
 		<dependency>
 			<groupId>org.mockito</groupId>
