@@ -22,6 +22,8 @@ public class RentalsService {
 
     @Autowired
     private RentalsRepository rentalsRepository;
+
+
     
     
     public class NotFoundException extends RuntimeException implements Serializable {
@@ -43,6 +45,7 @@ public class RentalsService {
     }
     
    public Rentals saveRentals(Rentals rentals, MultipartFile picture) {
+        rentals.setCreatedAt(java.time.LocalDateTime.now());
         String pictureFileName = picture.getOriginalFilename();
         rentals.setPicture(pictureFileName);
         System.out.println("rentals : " + rentals);

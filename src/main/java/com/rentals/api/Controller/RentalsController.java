@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Optional;
 import com.rentals.api.Service.RentalsService;
+import com.rentals.api.Service.UserService;
 import com.rentals.api.model.Rentals;
 import com.rentals.api.model.User;
 
@@ -26,6 +27,9 @@ public class RentalsController {
 
     @Autowired
     private RentalsService rentalsService;
+    
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/rentals")
     @ApiOperation(value = "Get all rentals", notes = "Returns a list of all rentals.")
@@ -51,20 +55,26 @@ public class RentalsController {
 
     @PostMapping(value = "/rentals", consumes = {"multipart/form-data"})
     @ApiOperation(value = "Create a new rental", notes = "Creates a new rental.")
-    public Rentals saveRentals(@RequestParam("picture") MultipartFile picture, @RequestParam("surface") BigDecimal surface, @RequestParam("price") BigDecimal price,@RequestParam("description") String description,@RequestParam("name") String name , @RequestParam("user_id") Long owner){
+    public Rentals saveRentals(@RequestHeader("Authorization") String authorizationHeader,
+                               @RequestParam("picture") MultipartFile picture,
+                               @RequestParam("surface") BigDecimal surface,
+                               @RequestParam("price") BigDecimal price,
+                               @RequestParam("description") String description,
+                               @RequestParam("name") String name) {
+        String token = authorizationHeader.substring("Bearer ".length()).trim();
+        User user = userService.getUserByToken(token);
+
         Rentals rentals = new Rentals();
-        User user = new User();
-        user.setId(owner);
         rentals.setName(name);
         rentals.setOwner(user);
         rentals.setSurface(surface);
         rentals.setPrice(price);
         rentals.setDescription(description);
         rentals.setPicture(picture.getOriginalFilename());
-        rentals.setCreatedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+        rentals.setCreatedAt(java.time.LocalDateTime.now());
         Rentals savedRentals = rentalsService.saveRentals(rentals, picture);
+
         return savedRentals;
-      
     }
 }
 

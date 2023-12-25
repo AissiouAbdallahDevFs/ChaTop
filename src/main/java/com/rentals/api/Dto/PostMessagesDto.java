@@ -6,7 +6,7 @@ import lombok.Data;
 public class PostMessagesDto {
 	
 	private String message;
-	private Long rentals_id;
+	private Long rental_id;
 	private Long user_id;
 	
 	

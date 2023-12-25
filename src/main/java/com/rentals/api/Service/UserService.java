@@ -44,6 +44,7 @@ public class UserService {
 
     public User saveUser(User user) {
     	user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setCreatedAt(java.time.LocalDateTime.now());
         User savedUser = userRepository.save(user);
         return savedUser;
     }
@@ -61,7 +62,9 @@ public class UserService {
         User existingUser = userRepository.findById(updatePassword.getId()).orElse(null);
         if (existingUser != null) {
             existingUser.setPassword(updatePassword.getPassword());
+            existingUser.setUpdatedAt(java.time.LocalDateTime.now());
         }
+
         User updatedRecord = userRepository.save(existingUser);
         return updatedRecord;
     }
@@ -81,7 +84,6 @@ public class UserService {
    
 public String authenticate(String email, String password) {
     Optional<User> optionalUser = userRepository.findByEmail(email);
-
     if (optionalUser.isPresent()) {
         User user = optionalUser.get();
 
@@ -101,19 +103,28 @@ public String authenticate(String email, String password) {
     return null;
 }
 
-    public String getEmailFromToken(String token) {
-        byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
+public String getEmailFromToken(String token) {
+    System.out.println("Token before processing: " + token);
+    
+    byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
 
-        String email = Jwts.parser()
-                .setSigningKey(jwtSecretBytes)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+    String email = Jwts.parser()
+            .setSigningKey(jwtSecretBytes)
+            .parseClaimsJws(token)
+            .getBody()
+            .getSubject();
 
-        return email;
-    }
+    return email;
+}
 
     public Optional<User> GetUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public User getUserByToken(String token) {
+        String email = getEmailFromToken(token);
+        return GetUserByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Utilisateur introuvable"));
+    }
+    
 }

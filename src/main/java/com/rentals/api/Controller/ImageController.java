@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 public class ImageController {
     private final Path fileStorageLocation = Paths.get("file");
 
-    @GetMapping("/images/{fileName:.+}")
+    @GetMapping("{fileName:.+}")
     public ResponseEntity<byte[]> serveFile(@PathVariable String fileName) {
         try {
             Path filePath = fileStorageLocation.resolve(fileName).normalize();

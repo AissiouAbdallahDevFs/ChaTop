@@ -62,6 +62,7 @@ public class UserController {
     @PostMapping("/auth/login")
     @ApiOperation(value = "Authenticate user", notes = "Authenticate a user and return a JWT token.")
     public ResponseEntity<String> authenticateUser(@RequestBody UserLoginRequest loginRequest) {
+
         String token = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (token != null) {
             return new ResponseEntity<>(token, HttpStatus.OK);

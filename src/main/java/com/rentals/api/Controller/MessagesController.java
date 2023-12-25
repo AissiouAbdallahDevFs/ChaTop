@@ -3,6 +3,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rentals.api.Dto.PostMessagesDto;
+import com.rentals.api.Repository.RentalsRepository;
+import com.rentals.api.Repository.UserRepository;
 import com.rentals.api.Service.MessagesService;
 import com.rentals.api.model.Messages;
 import com.rentals.api.model.Rentals;
@@ -27,7 +30,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Api(tags = "Messages", description = "Operations related to messages")
 public class MessagesController {
 
-    
+    @Autowired
+    RentalsRepository rentalsRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
     private final MessagesService  messagesService;
     
     @GetMapping("messages")
@@ -40,12 +48,12 @@ public class MessagesController {
     @PostMapping("messages")
     @ApiOperation(value = "Create a new message", notes = "Creates a new message.")
     public Messages createMessage(@RequestBody PostMessagesDto postMessagesDto) {
-    	Rentals rentals = new Rentals();
     	Messages messages = new Messages();
-    	User user = new User();
-    	rentals.setId(postMessagesDto.getRentals_id());
+    	User user = userRepository.findById(postMessagesDto.getUser_id()).get();
+        System.err.println("user : " + user);
+        Rentals rentals = rentalsRepository.findById(postMessagesDto.getRental_id()).get();
+        System.err.println("rentals : " + rentals);
     	messages.setMessage(postMessagesDto.getMessage());
-    	user.setId(postMessagesDto.getUser_id());
     	messages.setRental(rentals);
     	messages.setUser(user);
     	
