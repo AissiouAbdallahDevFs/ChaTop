@@ -1,0 +1,7 @@
+com.rentals.api
+com.rentals.api.config
+com.rentals.api.Controller
+com.rentals.api.Dto
+com.rentals.api.model
+com.rentals.api.Repository
+com.rentals.api.Service

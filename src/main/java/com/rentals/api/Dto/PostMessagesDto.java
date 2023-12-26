@@ -9,7 +9,4 @@ public class PostMessagesDto {
 	private Long rental_id;
 	private Long user_id;
 	
-	
-	
-	
 }
