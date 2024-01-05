@@ -28,16 +28,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         try {
-            String jwt = extractJwtFromRequest(request);
+            String jwtToken = extractJwtFromRequest(request);
 
-            if (jwt != null && validateJwtToken(jwt)) {
-                Authentication authentication = getAuthentication(jwt);
+
+            if (jwtToken != null && validateJwtToken(jwtToken)) {
+                Authentication authentication = getAuthentication(jwtToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            SecurityContextHolder.clearContext(); 
+            System.err.println("Error processing JWT -> Message: " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);
@@ -45,28 +45,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String extractJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-
+    
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-
+    
         return null;
     }
+    
 
     private boolean validateJwtToken(String jwtToken) {
+        System.out.println("JWT Token: " + jwtToken);
         try {
-            Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(jwtToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
             return true;
         } catch (SignatureException | MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            System.err.println("JWT validation error -> Message: " + e.getMessage());
             return false;
         }
     }
 
     private Authentication getAuthentication(String jwtToken) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(jwtToken).getBody();
+        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
 
-        String username = claims.getSubject();
+        String email = claims.getSubject();
 
-        return new UsernamePasswordAuthenticationToken(username, null, null);
+        if (email != null) {
+            return new UsernamePasswordAuthenticationToken(email, null, null);
+        }
+
+        return null;
     }
 }

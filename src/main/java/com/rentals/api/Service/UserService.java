@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.rentals.api.model.User;
 import com.rentals.api.Repository.UserRepository;
 import com.rentals.api.config.JwtConfig;
+import com.rentals.api.config.SecurityConfig;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -22,6 +24,9 @@ public class UserService {
 
     @Autowired
     private JwtConfig jwtConfig;
+
+    @Autowired
+    private SecurityConfig securityConfig;
 
 
     @Autowired
@@ -83,32 +88,35 @@ public class UserService {
     }
 
    
-    public String authenticate(String email, String password) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+   public String authenticate(String email, String password) {
+    Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+    if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
 
-            if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
-                long expirationTimeInMillis = System.currentTimeMillis() + 3600000;
+        if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            long expirationTimeInMillis = jwtConfig.getJwtExpirationMs();
 
-                String token = Jwts.builder()
-                        .setSubject(email)
-                        .setExpiration(new Date(expirationTimeInMillis))
-                        .signWith(SignatureAlgorithm.HS256, jwtConfig.getJwtSecret())
-                        .compact();
-
-                return token;
-            }
+            String token = Jwts.builder()
+                    .setSubject(email)
+                    .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMillis))
+                    .signWith(SignatureAlgorithm.HS256, jwtConfig.getJwtSecret())
+                    .compact();
+            System.err.println(token);
+            return token;
+        } else {
+            throw new NotFoundException("Mot de passe incorrect");
         }
-
-        return null;
+    } else {
+        throw new NotFoundException("Utilisateur introuvable");
     }
+}
+
+    
 public String getEmailFromToken(String token) {
-    byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
 
     String email = Jwts.parser()
-            .setSigningKey(jwtSecretBytes)
+            .setSigningKey(jwtConfig.getJwtSecret())
             .parseClaimsJws(token)
             .getBody()
             .getSubject();

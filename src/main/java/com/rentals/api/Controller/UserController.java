@@ -63,7 +63,6 @@ public class UserController {
     @ApiOperation(value = "Authenticate user", notes = "Authenticate a user and return a JWT token.")
     public ResponseEntity<String> authenticateUser(@RequestBody UserLoginRequest loginRequest) {
         String token = userService.authenticate(loginRequest.getLogin(), loginRequest.getPassword());
-        System.err.println("token : " + token);
 
         if (token != null) {
             return ResponseEntity.ok(token);
