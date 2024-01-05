@@ -102,7 +102,6 @@ public class UserService {
                     .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMillis))
                     .signWith(SignatureAlgorithm.HS256, jwtConfig.getJwtSecret())
                     .compact();
-            System.err.println(token);
             return token;
         } else {
             throw new NotFoundException("Mot de passe incorrect");

@@ -55,7 +55,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     
 
     private boolean validateJwtToken(String jwtToken) {
-        System.out.println("JWT Token: " + jwtToken);
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
             return true;

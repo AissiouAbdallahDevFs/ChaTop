@@ -50,9 +50,7 @@ public class MessagesController {
     public Messages createMessage(@RequestBody PostMessagesDto postMessagesDto) {
     	Messages messages = new Messages();
     	User user = userRepository.findById(postMessagesDto.getUser_id()).get();
-        System.err.println("user : " + user);
         Rentals rentals = rentalsRepository.findById(postMessagesDto.getRental_id()).get();
-        System.err.println("rentals : " + rentals);
     	messages.setMessage(postMessagesDto.getMessage());
     	messages.setRental(rentals);
     	messages.setUser(user);
