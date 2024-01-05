@@ -23,8 +23,9 @@ public class UserService {
     @Autowired
     private JwtConfig jwtConfig;
 
+
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public class NotFoundException extends RuntimeException implements Serializable {
         private static final long serialVersionUID = 1L;
@@ -38,12 +39,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> GetUserById(Long id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
     public User saveUser(User user) {
-    	user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+    	user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setCreatedAt(java.time.LocalDateTime.now());
         User savedUser = userRepository.save(user);
         return savedUser;
@@ -82,30 +83,28 @@ public class UserService {
     }
 
    
-public String authenticate(String email, String password) {
-    Optional<User> optionalUser = userRepository.findByEmail(email);
-    if (optionalUser.isPresent()) {
-        User user = optionalUser.get();
+    public String authenticate(String email, String password) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
-            byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
-            long expirationTimeInMillis = System.currentTimeMillis() + 3600000; 
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
 
-            String token = Jwts.builder()
-                    .setSubject(email)
-                    .setExpiration(new Date(expirationTimeInMillis))
-                    .signWith(SignatureAlgorithm.HS256, jwtSecretBytes)
-                    .compact();
-            return "{\"token\": \"" + token + "\"}";
+            if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                long expirationTimeInMillis = System.currentTimeMillis() + 3600000;
+
+                String token = Jwts.builder()
+                        .setSubject(email)
+                        .setExpiration(new Date(expirationTimeInMillis))
+                        .signWith(SignatureAlgorithm.HS256, jwtConfig.getJwtSecret())
+                        .compact();
+
+                return token;
+            }
         }
+
+        return null;
     }
-
-    return null;
-}
-
 public String getEmailFromToken(String token) {
-    System.out.println("Token before processing: " + token);
-    
     byte[] jwtSecretBytes = jwtConfig.getJwtSecret().getBytes();
 
     String email = Jwts.parser()
@@ -117,13 +116,13 @@ public String getEmailFromToken(String token) {
     return email;
 }
 
-    public Optional<User> GetUserByEmail(String email) {
+    public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     public User getUserByToken(String token) {
         String email = getEmailFromToken(token);
-        return GetUserByEmail(email)
+        return getUserByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Utilisateur introuvable"));
     }
     

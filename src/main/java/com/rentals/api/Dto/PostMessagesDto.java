@@ -1,4 +1,4 @@
-package com.rentals.api.Dto;
+package com.rentals.api.dto;
 
 import lombok.Data;
 

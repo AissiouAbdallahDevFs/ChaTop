@@ -1,4 +1,4 @@
-package com.rentals.api.Dto;
+package com.rentals.api.dto;
 
 public class UserLoginRequest {
 
@@ -6,10 +6,10 @@ public class UserLoginRequest {
 	private String email;
     private String password;
     
-	public String getEmail() {
+	public String getLogin() {
 		return email;
 	}
-	public void setEmail(String email) {
+	public void setLogin(String email) {
 		this.email = email;
 	}
 	public String getPassword() {

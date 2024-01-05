@@ -1,4 +1,4 @@
-package com.rentals.api.Controller;
+package com.rentals.api.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rentals.api.Dto.PostMessagesDto;
 import com.rentals.api.Repository.RentalsRepository;
 import com.rentals.api.Repository.UserRepository;
 import com.rentals.api.Service.MessagesService;
+import com.rentals.api.dto.PostMessagesDto;
 import com.rentals.api.model.Messages;
 import com.rentals.api.model.Rentals;
 import com.rentals.api.model.User;

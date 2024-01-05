@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,6 +28,4 @@ public class User {
 	private LocalDateTime updatedAt;
 	
 	
-
-
 }

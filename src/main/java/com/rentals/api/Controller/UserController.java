@@ -1,6 +1,5 @@
-package com.rentals.api.Controller;
+package com.rentals.api.controller;
 
-import com.rentals.api.Dto.UserLoginRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import com.rentals.api.Service.UserService;
+import com.rentals.api.dto.UserLoginRequest;
 import com.rentals.api.model.User;
 
 @RestController
@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping("/user/{id}")
     @ApiOperation(value = "Get user by ID", notes = "Returns a user by its ID.")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.GetUserById(id);
+        Optional<User> user = userService.getUserById(id);
 
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
@@ -59,15 +59,16 @@ public class UserController {
     
     
    
-    @PostMapping("/auth/login")
+    @PostMapping("auth/login")
     @ApiOperation(value = "Authenticate user", notes = "Authenticate a user and return a JWT token.")
     public ResponseEntity<String> authenticateUser(@RequestBody UserLoginRequest loginRequest) {
+        String token = userService.authenticate(loginRequest.getLogin(), loginRequest.getPassword());
+        System.err.println("token : " + token);
 
-        String token = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         if (token != null) {
-            return new ResponseEntity<>(token, HttpStatus.OK);
+            return ResponseEntity.ok(token);
         } else {
-            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
 
@@ -76,7 +77,7 @@ public class UserController {
     public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String authorizationHeader) {
         String token = authorizationHeader.substring(7);
         String email = userService.getEmailFromToken(token);
-        Optional<User> user = userService.GetUserByEmail(email);
+        Optional<User> user = userService.getUserByEmail(email);
 
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);

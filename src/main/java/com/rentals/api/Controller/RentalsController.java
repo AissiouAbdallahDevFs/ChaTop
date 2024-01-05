@@ -1,4 +1,4 @@
-package com.rentals.api.Controller;
+package com.rentals.api.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

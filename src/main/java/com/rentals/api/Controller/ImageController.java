@@ -1,4 +1,4 @@
-package com.rentals.api.Controller;
+package com.rentals.api.controller;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
