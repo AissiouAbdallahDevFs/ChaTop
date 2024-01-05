@@ -12,8 +12,7 @@ public class SecretKeyGenerator {
 
             // Convertir la clé secrète en une représentation Base64 pour stockage ou utilisation
             String base64Key = encodeBase64(secretKey);
-
-            System.out.println("Clé secrète générée : " + base64Key);
+            
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

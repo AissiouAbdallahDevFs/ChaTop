@@ -48,7 +48,6 @@ public class RentalsService {
         rentals.setCreatedAt(java.time.LocalDateTime.now());
         String pictureFileName = picture.getOriginalFilename();
         rentals.setPicture(pictureFileName);
-        System.out.println("rentals : " + rentals);
         Rentals savedRentals = rentalsRepository.save(rentals);
         uploadFileToFolder(picture);
         return savedRentals;
