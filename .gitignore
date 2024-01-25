@@ -39,3 +39,5 @@ build/
 
 # .gitignore
 *.class
+!**/src/main/**/target/classes/
+!**/bin/src/test/**/target/classes/
