@@ -33,3 +33,4 @@ build/
 .vscode/
 /bin/src/test/java/com/rentals/api/*.class
 *.class
+bin/src/test/java/com/rentals/api/ApiApplicationTests.class
