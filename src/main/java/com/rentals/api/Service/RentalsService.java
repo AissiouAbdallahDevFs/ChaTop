@@ -1,4 +1,4 @@
-package com.rentals.api.Service;
+package com.rentals.api.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serializable;
 
-import com.rentals.api.Repository.*;
 import com.rentals.api.model.Rentals;
+import com.rentals.api.repository.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

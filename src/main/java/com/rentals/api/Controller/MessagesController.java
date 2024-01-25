@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rentals.api.Repository.RentalsRepository;
-import com.rentals.api.Repository.UserRepository;
-import com.rentals.api.Service.MessagesService;
 import com.rentals.api.dto.PostMessagesDto;
 import com.rentals.api.model.Messages;
 import com.rentals.api.model.Rentals;
 import com.rentals.api.model.User;
+import com.rentals.api.repository.RentalsRepository;
+import com.rentals.api.repository.UserRepository;
+import com.rentals.api.service.MessagesService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

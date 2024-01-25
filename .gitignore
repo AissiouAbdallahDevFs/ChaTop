@@ -39,4 +39,4 @@ build/
 
 # .gitignore
 *.class
-bin/src/test/java/com/rentals/api/*
+/bin/src/test/java/com/rentals/api/*

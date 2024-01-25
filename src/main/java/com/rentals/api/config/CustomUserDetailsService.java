@@ -1,6 +1,8 @@
 package com.rentals.api.config;
 
 import com.rentals.api.model.User;
+import com.rentals.api.repository.UserRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.rentals.api.Repository.UserRepository;
 
 
 @Service

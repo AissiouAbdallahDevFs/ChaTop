@@ -1,9 +1,10 @@
-package com.rentals.api.Service;
+package com.rentals.api.service;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.rentals.api.Repository.*;
+
 import com.rentals.api.model.Messages;
+import com.rentals.api.repository.*;
 
 
 

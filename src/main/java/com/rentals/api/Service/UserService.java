@@ -1,4 +1,4 @@
-package com.rentals.api.Service;
+package com.rentals.api.service;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.rentals.api.model.User;
-import com.rentals.api.Repository.UserRepository;
+import com.rentals.api.repository.UserRepository;
 import com.rentals.api.config.JwtConfig;
 import com.rentals.api.config.SecurityConfig;
 

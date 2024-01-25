@@ -12,10 +12,11 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Optional;
-import com.rentals.api.Service.RentalsService;
-import com.rentals.api.Service.UserService;
+
 import com.rentals.api.model.Rentals;
 import com.rentals.api.model.User;
+import com.rentals.api.service.RentalsService;
+import com.rentals.api.service.UserService;
 
 import java.util.Map;
 

@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
-import com.rentals.api.Service.UserService;
+
 import com.rentals.api.dto.UserLoginRequest;
 import com.rentals.api.model.User;
+import com.rentals.api.service.UserService;
 
 @RestController
 @CrossOrigin

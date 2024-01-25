@@ -1,4 +1,4 @@
-package com.rentals.api.Repository;
+package com.rentals.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.rentals.api.model.Rentals;
